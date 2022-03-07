@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    private var countries = ["france", "germany", "uk", "us"]
-    var correctAns = Int.random(in: 0...2)
+    @State private var showingScores = false
+    @State private var scoreTitle = ""
+    @State private var countries = ["france", "germany", "uk", "us"].shuffled()
+    @State private var correctAns = Int.random(in: 0...2)
     
     var body: some View {
         
@@ -35,7 +37,27 @@ struct ContentView: View {
                 }
             }
         }
+        .alert(scoreTitle, isPresented: $showingScores) {
+            Button("Continue", action: askQuestion)
+        }
     }
+    
+    func flagTapped(_ number: Int) {
+        if number == correctAns {
+            scoreTitle = "Correct"
+        } else {
+            scoreTitle = "Wrong"
+        }
+        
+        showingScores = true
+    }
+    
+    func askQuestion() {
+        // reset the question
+        countries.shuffled()
+        correctAns = Int.random(in: 0...2)
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

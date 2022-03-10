@@ -16,7 +16,7 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            Color.mint
+            LinearGradient(colors: [.mint, .black], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
             VStack(spacing: 30) {
@@ -24,8 +24,10 @@ struct ContentView: View {
                 VStack {
                     Text("Guess the correct flag")
                         .foregroundColor(.white)
+                        .font(.headline.bold())
                     Text("\(countries[correctAns].capitalizingFirstLetter())")
                         .foregroundColor(.white)
+                        .font(.largeTitle.weight(.semibold))
                 }
                 
                 ForEach(0..<3) { number in
@@ -33,6 +35,8 @@ struct ContentView: View {
                         // flag was tapped
                     } label: {
                         Image(countries[number]).renderingMode(.original)
+                            .clipShape(Capsule())
+                            .shadow(radius: 5)
                     }
                 }
             }

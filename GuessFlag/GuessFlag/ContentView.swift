@@ -19,27 +19,48 @@ struct ContentView: View {
             LinearGradient(colors: [.mint, .black], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
-            VStack(spacing: 30) {
+            VStack {
+                Spacer()
                 
-                VStack {
-                    Text("Guess the correct flag")
-                        .foregroundColor(.white)
-                        .font(.headline.bold())
-                    Text("\(countries[correctAns].capitalizingFirstLetter())")
-                        .foregroundColor(.white)
-                        .font(.largeTitle.weight(.semibold))
-                }
+                Text("Guest the flag")
+                    .font(.largeTitle.bold())
+                    .foregroundColor(.white)
                 
-                ForEach(0..<3) { number in
-                    Button {
-                        // flag was tapped
-                    } label: {
-                        Image(countries[number]).renderingMode(.original)
-                            .clipShape(Capsule())
-                            .shadow(radius: 5)
+                VStack(spacing: 20) {
+                    
+                    VStack {
+                        Text("Tap the flag of")
+                            .foregroundColor(.secondary)
+                            .font(.subheadline.weight(.heavy))
+                        Text("\(countries[correctAns].capitalizingFirstLetter())")
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    
+                    ForEach(0..<3) { number in
+                        Button {
+                            // flag was tapped
+                        } label: {
+                            Image(countries[number]).renderingMode(.original)
+                                .clipShape(Capsule())
+                                .shadow(radius: 5)
+                        }
                     }
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                Spacer()
+                Spacer()
+                
+                Text("Scores: ???")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
+                
+                Spacer()
             }
+            .padding()
         }
         .alert(scoreTitle, isPresented: $showingScores) {
             Button("Continue", action: askQuestion)

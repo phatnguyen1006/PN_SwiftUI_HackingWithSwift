@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var scores = 0
     @State private var showingScores = false
     @State private var scoreTitle = ""
-    @State private var countries = ["france", "germany", "uk", "us"].shuffled()
+    @State private var countries = ["France", "Germany", "UK", "US"].shuffled()
     @State private var correctAns = Int.random(in: 0...2)
     
     var body: some View {
@@ -32,15 +33,17 @@ struct ContentView: View {
                         Text("Tap the flag of")
                             .foregroundColor(.secondary)
                             .font(.subheadline.weight(.heavy))
-                        Text("\(countries[correctAns].capitalizingFirstLetter())")
+                        Text("\(countries[correctAns])")
                             .font(.largeTitle.weight(.semibold))
                     }
                     
                     ForEach(0..<3) { number in
                         Button {
                             // flag was tapped
+                            flagTapped(number)
                         } label: {
-                            Image(countries[number]).renderingMode(.original)
+                            Image(countries[number])
+                                .renderingMode(.original)
                                 .clipShape(Capsule())
                                 .shadow(radius: 5)
                         }
@@ -54,9 +57,12 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Scores: ???")
+                Text("Scores: \(scores)")
                     .foregroundColor(.white)
                     .font(.title.bold())
+                    .onChange(of: scores) { newValue in
+                        
+                    }
                 
                 Spacer()
             }
@@ -64,12 +70,15 @@ struct ContentView: View {
         }
         .alert(scoreTitle, isPresented: $showingScores) {
             Button("Continue", action: askQuestion)
+        } message: {
+            Text("Your scores: \(scores)")
         }
     }
     
     func flagTapped(_ number: Int) {
         if number == correctAns {
             scoreTitle = "Correct"
+            scores+=1
         } else {
             scoreTitle = "Wrong"
         }
@@ -79,7 +88,7 @@ struct ContentView: View {
     
     func askQuestion() {
         // reset the question
-        countries.shuffled()
+        countries.shuffle()
         correctAns = Int.random(in: 0...2)
     }
     
